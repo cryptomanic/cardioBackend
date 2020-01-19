@@ -21,9 +21,24 @@ public class Controller {
         if(optionalPatient.isPresent()) {
             return "{\"Success\":0,message:\"Patient already registered\"}";
         } else {
-            // add check whether entry is successfully inserted or not
             customRepository.save(patient);
             return "{\"Success\":1,message:\"Successfully registered\"}";
+        }
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String checkPatient(@RequestBody Patient patient) {
+        Optional<Patient> optionalPatient = customRepository.findById(patient.emailId);
+
+        if(optionalPatient.isPresent()) {
+            Patient tempPatient = optionalPatient.get();
+            if(tempPatient.password.equals(patient.password)) {
+                return "{\"Success\":1,message:\"Login successful\"}";
+            }
+            return "{\"Success\":0,message:\"Wrong password\"}";
+
+        } else {
+            return "{\"Success\":0,message:\"Wrong EmailId\"}";
         }
     }
 
