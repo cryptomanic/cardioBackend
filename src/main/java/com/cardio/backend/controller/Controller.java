@@ -3,6 +3,8 @@ package com.cardio.backend.controller;
 import com.cardio.backend.entity.Patient;
 import com.cardio.backend.repository.CustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -14,6 +16,7 @@ public class Controller {
     @Autowired
     CustomRepository customRepository;
 
+    @CrossOrigin()
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     public String addPatient(@RequestBody Patient patient) {
         Optional<Patient> optionalPatient = customRepository.findById(patient.emailId);
@@ -21,12 +24,14 @@ public class Controller {
         if(optionalPatient.isPresent()) {
             return "{\"Success\":0,message:\"Patient already registered\"}";
         } else {
+            patient.setSourceOfData("signup");
             customRepository.save(patient);
             return "{\"Success\":1,message:\"Successfully registered\"}";
         }
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @CrossOrigin()
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String checkPatient(@RequestBody Patient patient) {
         Optional<Patient> optionalPatient = customRepository.findById(patient.emailId);
 
@@ -42,4 +47,12 @@ public class Controller {
         }
     }
 
+    @CrossOrigin()
+    @RequestMapping(value = "/getintouch", method = RequestMethod.POST)
+    public ResponseEntity<String> getCustomerContactDetails(@RequestBody Patient patient) {
+        patient.setSourceOfData("getintouch");
+        customRepository.save(patient);
+        String responseBody = "{\"Success\":1,message:\"Customer interest is registered\"}" ;
+        return new ResponseEntity<String>("suceess", HttpStatus.OK);
+    }
 }

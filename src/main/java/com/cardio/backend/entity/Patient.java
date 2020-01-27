@@ -13,6 +13,8 @@ public class Patient {
     public String password;
     public String phoneNo;
     public Integer question;
+    public String sourceOfData;
+
 
     public Patient(String firstName, String lastName, String emailId, String password,
                    String phoneNo, Integer question) {
@@ -70,5 +72,13 @@ public class Patient {
 
     public void setQuestion(Integer question) {
         this.question = question;
+    }
+
+    public String getSourceOfData() {
+        return sourceOfData;
+    }
+
+    public void setSourceOfData(String sourceOfData) {
+        this.sourceOfData = sourceOfData;
     }
 }
