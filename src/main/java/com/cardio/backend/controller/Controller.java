@@ -55,4 +55,10 @@ public class Controller {
         String responseBody = "{\"Success\":1,message:\"Customer interest is registered\"}" ;
         return new ResponseEntity<String>("suceess", HttpStatus.OK);
     }
+
+    @CrossOrigin()
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public ResponseEntity<String> getSuccess() {
+        return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
 }
