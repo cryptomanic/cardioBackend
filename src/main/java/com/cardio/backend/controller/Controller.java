@@ -5,16 +5,10 @@ import com.cardio.backend.repository.CustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.*;
-import javax.mail.internet.*;
-import java.io.IOException;
-import java.util.Date;
+
 import java.util.Optional;
-import java.util.Properties;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -22,8 +16,6 @@ public class Controller {
 
     @Autowired
     CustomRepository customRepository;
-    @Autowired
-    private JavaMailSender javaMailSender;
 
     @CrossOrigin()
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
@@ -62,13 +54,6 @@ public class Controller {
         patient.setSourceOfData("getintouch");
         customRepository.save(patient);
         String responseBody = "{\"Success\":1,message:\"Customer interest is registered\"}" ;
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo("india.cardio@gmail.com");
-
-        msg.setSubject("Maja aa gaya");
-        msg.setText("Patient Details\n" + "Name: "+patient.getFirstName()+ "\nNumber: "+patient.getPhoneNo());
-
-        javaMailSender.send(msg);
         return new ResponseEntity<String>("suceess", HttpStatus.OK);
     }
 
@@ -77,13 +62,5 @@ public class Controller {
     public ResponseEntity<String> getSuccess() {
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
-
-//    @CrossOrigin()
-//    @RequestMapping(value = "/sendemail", method = RequestMethod.POST)
-//    private ResponseEntity<String> sendEmail(@RequestBody Patient patient) throws AddressException, MessagingException, IOException {
-//
-//
-//        return new ResponseEntity<String>("Mail Sent Successfully", HttpStatus.OK);
-//    }
 
 }
